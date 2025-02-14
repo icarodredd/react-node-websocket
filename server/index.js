@@ -6,11 +6,21 @@ const uuidv4 = require("uuid").v4;
 const server = http.createServer();
 const wsServer = new WebSocketServer({ server });
 
-const connections = [];
-const users = [];
+const connections = {};
+const users = {};
+
+const broadcast = () => {
+  Object.keys(connections).forEach((uuid) => {
+    const connection = connections[uuid];
+    const message = JSON.stringify(users);
+    connection.send(message);
+  });
+};
 
 const handleMessage = (data, uuid) => {
-  const message = JSON.stringify(data.toString());
+  const message = JSON.parse(data.toString());
+  users[uuid].state = message;
+  broadcast();
   console.log(message);
 };
 
