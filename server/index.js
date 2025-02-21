@@ -17,6 +17,12 @@ const broadcast = () => {
   });
 };
 
+const handleClose = (uuid) => {
+  delete connections[uuid];
+  delete users[uuid];
+  broadcast();
+};
+
 const handleMessage = (data, uuid) => {
   const message = JSON.parse(data.toString());
   users[uuid].state = message;

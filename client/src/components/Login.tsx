@@ -12,12 +12,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import React from "react";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
 });
 
-export default function Login() {
+export default function Login({
+  setUsername,
+}: {
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -27,6 +32,7 @@ export default function Login() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    setUsername(values.username);
   }
 
   return (
